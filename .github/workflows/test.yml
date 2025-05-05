@@ -16,6 +16,7 @@ jobs:
       requires_approval: ${{ steps.set-output.outputs.requires_approval }}
     steps:
       - name: Approved ✅
+        id: set-output
         run: echo "requires_approval=true" >> $GITHUB_OUTPUT
 
   test:
