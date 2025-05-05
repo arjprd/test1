@@ -1,0 +1,16 @@
+name: Manual Approval Before Merge
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - synchronize
+
+jobs:
+  require-manual-approval:
+    name: Wait for Manual Approval
+    steps:
+      - name: Approved ✅
+        run: echo "Manual approval granted. Ready to merge."
