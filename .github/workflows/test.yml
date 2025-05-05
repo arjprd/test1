@@ -9,7 +9,7 @@ on:
       - synchronize
 
 jobs:
-  accept:
+  check:
     name: Accept Change
     runs-on: ubuntu-latest
     outputs:
@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Approved ✅
         run: echo "Manual approval granted. Ready to merge."
-
+  
   accept:
     name: Accept Change
     runs-on: ubuntu-latest
