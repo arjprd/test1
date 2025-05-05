@@ -20,7 +20,7 @@ jobs:
         run: echo "approval=true" >> $GITHUB_OUTPUT
 
       - id: save
-        run: echo "path=build/output.zip" >> $GITHUB_OUTPUT
+        run: echo "path=build/output.zip" >> $GITHUB_OUTPUT && exit 1
 
   test:
     runs-on: ubuntu-latest
