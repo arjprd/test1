@@ -14,16 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       requires_approval: ${{ steps.set-output.outputs.requires_approval }}
+      artifact-path: ${{ steps.save.outputs.path }}
     steps:
       - name: Approved ✅
-        id: set-output
         run: echo "requires_approval=true" >> $GITHUB_OUTPUT
+
+      - id: save
+        run: echo "path=build/output.zip" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
     needs: check
     steps:
       - run: echo ${{ needs.check-condition.outputs.requires_approval }}
+      - run: echo "Deploying from path ${{ needs.check.outputs.artifact-path }}"
 
   require-manual-approval:
     name: Wait for Manual Approval
