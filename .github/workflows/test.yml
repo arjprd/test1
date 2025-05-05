@@ -3,12 +3,8 @@ name: PR Merge Gate
 on:
   pull_request:
     types: [labeled]
-    branches:
-      - main
   pull_request_target:
     types: [labeled]
-    branches:
-      - main
 
 jobs:
   verify:
