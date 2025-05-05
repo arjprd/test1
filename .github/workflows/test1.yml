@@ -1,17 +1,37 @@
-name: Manual Approval Before Merge 1
+name: PR Validation
 
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
-      - ready_for_review
-      - synchronize
+    types: [opened, synchronize, reopened]
+    # Optional: specify branches if you only want to run on certain branches
+    # branches: [ main, develop ]
 
 jobs:
-  require-manual-approval:
-    name: Wait for Manual Approval
+  validate:
+    name: Validate PR
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Approved ✅
-        run: echo "Manual approval granted. Ready to merge."
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Lint
+        run: npm run lint
+        
+      - name: Type check
+        run: npm run type-check
+      
+      - name: Run tests
+        run: npm test
+        
+      - name: Build
+        run: npm run build
