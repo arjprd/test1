@@ -18,6 +18,12 @@ jobs:
       - name: Approved ✅
         run: echo "requires_approval=true" >> $GITHUB_OUTPUT
 
+  test:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - run: echo ${{ needs.check-condition.outputs.requires_approval }}
+
   require-manual-approval:
     name: Wait for Manual Approval
     runs-on: ubuntu-latest
