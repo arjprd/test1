@@ -11,6 +11,7 @@ on:
 jobs:
   require-manual-approval:
     name: Wait for Manual Approval
+    runs-on: ubuntu-latest
     steps:
       - name: Approved ✅
         run: echo "Manual approval granted. Ready to merge."
