@@ -13,11 +13,11 @@ jobs:
     name: Accept Change
     runs-on: ubuntu-latest
     outputs:
-      requires_approval: ${{ steps.set-output.outputs.requires_approval }}
+      requires-approval: ${{ steps.check.outputs.approval }}
       artifact-path: ${{ steps.save.outputs.path }}
     steps:
-      - name: Approved ✅
-        run: echo "requires_approval=true" >> $GITHUB_OUTPUT
+      - id: check
+        run: echo "approval=true" >> $GITHUB_OUTPUT
 
       - id: save
         run: echo "path=build/output.zip" >> $GITHUB_OUTPUT
@@ -26,26 +26,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
     steps:
-      - run: echo ${{ needs.check-condition.outputs.requires_approval }}
+      - run: echo ${{ needs.check.outputs.requires-approval }}
       - run: echo "Deploying from path ${{ needs.check.outputs.artifact-path }}"
 
   require-manual-approval:
     name: Wait for Manual Approval
     runs-on: ubuntu-latest
     needs: check
-    if: needs.check-condition.outputs.requires_approval != 'true'
+    if: needs.check.outputs.requires-approval == 'true'
     environment:
       name: production
       url: https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}
     steps:
       - name: Approved ✅
         run: echo "Manual approval granted. Ready to merge."
-  
-  accept:
-    name: Accept Change
-    runs-on: ubuntu-latest
-    needs: require-manual-approval
-    steps:
-      - name: Approved ✅
-        run: echo "Manual approval granted. Ready to merge."
-
