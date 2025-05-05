@@ -1,45 +1,20 @@
-name: PR Merge Gate
+name: Manual Approval Before Merge
 
 on:
   pull_request:
-    types: [labeled]
-  pull_request_target:
-    types: [labeled]
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - synchronize
 
 jobs:
-  verify:
-    if: github.event.label.name == 'ready-to-merge'
+  require-manual-approval:
+    name: Wait for Manual Approval
     runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
-          
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-  approve-and-merge:
-    needs: verify
-    runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: production
-      # Optional URL if you want to link to the PR or deployment
-      url: ${{ github.event.pull_request.html_url }}
-    
+      url: https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}
     steps:
-      - name: Merge PR
-        uses: pascalgn/automerge-action@v0.15.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_LABELS: "ready-to-merge"
-          MERGE_METHOD: "squash"
-          MERGE_COMMIT_MESSAGE: "pull-request-title"
-          MERGE_DELETE_BRANCH: true
-          MERGE_RETRIES: 3
-          MERGE_RETRY_SLEEP: 10000
+      - name: Approved ✅
+        run: echo "Manual approval granted. Ready to merge."
