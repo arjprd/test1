@@ -16,7 +16,7 @@ jobs:
       requires_approval: ${{ steps.set-output.outputs.requires_approval }}
     steps:
       - name: Approved ✅
-        run: echo "requires_approval=false" >> $GITHUB_OUTPUT
+        run: echo "requires_approval=true" >> $GITHUB_OUTPUT
 
   require-manual-approval:
     name: Wait for Manual Approval
