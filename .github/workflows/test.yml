@@ -21,7 +21,7 @@ jobs:
   require-manual-approval:
     name: Wait for Manual Approval
     runs-on: ubuntu-latest
-    if: needs.check-condition.outputs.requires_approval == 'true'
+    if: needs.check-condition.outputs.requires_approval != 'true'
     environment:
       name: production
       url: https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}
